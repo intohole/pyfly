@@ -10,20 +10,23 @@ from cocos.scene import Scene
 from cocos.director import director
 from cocos.actions import MoveTo
 from cocos.actions import Repeat
-from cocos.actions import Accelerate
-# from cocos.actions import Reverse
+from cocos.actions import Delay
+
+
 
 
 
 
 class BossPlane(Layer):
 
-	def __init__(self , image , position , duration ):
-		super(BossPlane , self ).__init__()
-		self.plane = Sprite(image = image  , position = position)
-		move = MoveTo((position[0], self.plane.image.height - 10) , duration = duration )
-		self.plane.do(Repeat(move))
-		self.add(self.plane)
+    def __init__(self , image , position , duration , delay = 3.0):
+        super(BossPlane , self ).__init__()
+        self.plane = Sprite(image = image  , position = position)
+        move = MoveTo((position[0], -self.plane.image.height ) , duration = duration )
+        move_back = MoveTo( position , 0 )
+        delay_action = Delay(delay)
+        self.plane.do(Repeat(move + delay_action + move_back))
+        self.add(self.plane)
 
 
 
